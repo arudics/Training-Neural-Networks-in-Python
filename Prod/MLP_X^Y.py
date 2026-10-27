@@ -169,10 +169,7 @@ class MultiLayerPerceptron:
                 self.network[i][j].bias += self.eta * self.d[i][j]
         return MSE
 
-#test code
-mlp = MultiLayerPerceptron(layers=[2,32,32,1], eta = 0.0005)
-print("\nTraining Neural Network \n")
-
+# sample creation 1
 samples = [
     ([1,2], [1]),
     ([2,2], [4]),
@@ -202,17 +199,17 @@ samples = [
 
     ([2,5], [32]),
     ([3,5], [243]),
-    ([4,5], [1024]),   # slightly above 1000, remove if needed
+    ([4,5], [1024]),
 
     ([2,6], [64]),
     ([3,6], [729]),
 
     ([2,7], [128]),
-    ([3,7], [2187]),   # above 1000, remove if needed
+    ([3,7], [2187]),
 
     ([2,8], [256]),
     ([2,9], [512]),
-    ([2,10], [1024]),  # slightly above 1000
+    ([2,10], [1024]),
 
     ([3,1], [3]),
     ([4,1], [4]),
@@ -224,8 +221,16 @@ samples = [
     ([10,1], [10])
 ]
 
+# sample creation 2
+X = np.random.uniform(0.001, 10.0, (100, 2)).astype(dtype=np.float64)
+Y = np.power(X[:,0], X[:,1]).astype(dtype=np.float64)                  # target: x^y
+samples = list(zip(X,Y[:, None]))
 
-for i in range(25000):
+#test code
+mlp = MultiLayerPerceptron(layers=[2,32,32,1], eta = 0.0005)
+print("\nTraining Neural Network \n")
+
+for i in range(3000):
     random.shuffle(samples)
 
     mse = 0.0
@@ -234,7 +239,7 @@ for i in range(25000):
         mse +=mlp.bp(x, y_train)
     mse /= len(samples)
     
-    if(i%100 == 0):
+    if(i%500 == 0):
         print (i,     mse)
 
 mlp.print_weights()
